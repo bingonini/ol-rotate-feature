@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>ol3-rotate-feature by ghettovoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">ol3-rotate-feature</h1>
+      <h2 class="project-tagline">Vector feature Rotate interaction for OpenLayers 3</h2>
+      <a href="https://github.com/ghettovoice/ol3-rotate-feature" class="btn">View on GitHub</a>
+      <a href="https://github.com/ghettovoice/ol3-rotate-feature/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ghettovoice/ol3-rotate-feature/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="rotate-feature-interaction-for-openlayers-3" class="anchor" href="#rotate-feature-interaction-for-openlayers-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rotate feature interaction for OpenLayers 3</h1>
+
+<p>Plugin adds interaction that allows to rotate vector features around some anchor.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install it thought NPM:</p>
+
+<div class="highlight highlight-source-shell"><pre>npm install ol3-rotate-feature</pre></div>
+
+<p>Or download the latest version archive and add it with script tag:</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>ol3-rotate-feature/dist/bundle.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Plugin is packed into UMD wrapper and exports an object
+<code>ol3RotateFeature</code> with three properties:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">export</span> {
+    <span class="pl-smi">RotateFeatureInteraction</span>,
+    <span class="pl-smi">RotateFeatureEvent</span>,
+    <span class="pl-smi">RotateFeatureEventType</span>
+};</pre></div>
+
+<p>In Browser environment it exports to <code>ol3RotateFeature</code> global variable.</p>
+
+<h3>
+<a id="options" class="anchor" href="#options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Options</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">Option</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">features</td>
+<td align="left"><em>ol.Collection</em></td>
+<td align="left">The features the interaction works on. Required.</td>
+</tr>
+<tr>
+<td align="left">style</td>
+<td align="left"><em>ol.style.Style | Array | ol.style.StyleFunction</em></td>
+<td align="left">Style of the overlay with interaction helper features.</td>
+</tr>
+<tr>
+<td align="left">angleProperty</td>
+<td align="left"><em>string</em></td>
+<td align="left">Property name where to save current rotation angle. Default is  'angle'.</td>
+</tr>
+<tr>
+<td align="left">anchorProperty</td>
+<td align="left"><em>string</em></td>
+<td align="left">Property name where to save current rotation anchor coordinates. Default is  'anchor'.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="events" class="anchor" href="#events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events</h3>
+
+<p>All events triggered by the interaction are instances of <code>RotateFeatureEvent</code>.</p>
+
+<h5>
+<a id="memebers" class="anchor" href="#memebers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Memebers</h5>
+
+<ul>
+<li>
+<strong>features</strong>    <em>ol.Collection</em>     The features being rotated.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th align="left">Event</th>
+<th align="left">Arguments</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">rotatestart</td>
+<td align="left"><em>RotateFeatureEvent</em></td>
+<td align="left">Triggered upon feature rotate start.</td>
+</tr>
+<tr>
+<td align="left">rotating</td>
+<td align="left"><em>RotateFeatureEvent</em></td>
+<td align="left">Triggered upon feature rotating.</td>
+</tr>
+<tr>
+<td align="left">rotateend</td>
+<td align="left"><em>RotateFeatureEvent</em></td>
+<td align="left">Triggered upon feature rotation end.</td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="example-usage" class="anchor" href="#example-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example usage:</h4>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">ol</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>openlayers<span class="pl-pds">'</span></span>;
+<span class="pl-k">import</span> <span class="pl-v">*</span> <span class="pl-k">as</span> <span class="pl-smi">ol3RotateFeature</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>ol3-rotate-feature<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">const</span> <span class="pl-c1">point</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>point<span class="pl-pds">'</span></span>,
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">Point</span>([<span class="pl-c1">2384267.0573564973</span>, <span class="pl-c1">7557371.884852641</span>])
+});
+<span class="pl-k">const</span> <span class="pl-c1">line</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>line<span class="pl-pds">'</span></span>,
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">LineString</span>([
+        [<span class="pl-k">-</span><span class="pl-c1">603697.2100018249</span>, <span class="pl-k">-</span><span class="pl-c1">239432.60826165066</span>], 
+        [<span class="pl-c1">4190433.20404443</span>, <span class="pl-c1">2930563.8287811787</span>]
+    ])
+});
+<span class="pl-k">const</span> <span class="pl-c1">polygon</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>polygon<span class="pl-pds">'</span></span>,
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">Polygon</span>([[
+        [<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>], 
+        [<span class="pl-k">-</span><span class="pl-c1">9541458.663080638</span>, <span class="pl-c1">6221214.458704827</span>], 
+        [<span class="pl-k">-</span><span class="pl-c1">11473786.738129886</span>, <span class="pl-c1">3300708.4819848104</span>], 
+        [<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>]
+    ]])
+});
+
+<span class="pl-k">const</span> <span class="pl-c1">map</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Map</span>({
+    view<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.View</span>({
+        center<span class="pl-k">:</span> [<span class="pl-c1">0</span>, <span class="pl-c1">0</span>],
+        zoom<span class="pl-k">:</span> <span class="pl-c1">2</span>
+    }),
+    layers<span class="pl-k">:</span> [
+        <span class="pl-k">new</span> <span class="pl-en">ol.layer</span>.<span class="pl-en">Tile</span>({
+            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source</span>.<span class="pl-en">MapQuest</span>({ layer<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>osm<span class="pl-pds">'</span></span> })
+        }),
+        <span class="pl-k">new</span> <span class="pl-en">ol.layer</span>.<span class="pl-en">Vector</span>({
+            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source</span>.<span class="pl-en">Vector</span>({
+                projection<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>EPSG:33857<span class="pl-pds">'</span></span>,
+                features<span class="pl-k">:</span> [point, line, polygon]
+            })
+        })
+    ],
+    target<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>map<span class="pl-pds">'</span></span>,
+    projection<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>EPSG:3857<span class="pl-pds">'</span></span>
+});
+
+<span class="pl-k">const</span> <span class="pl-c1">features</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Collection</span>();
+<span class="pl-k">const</span> <span class="pl-c1">select</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.interaction</span>.<span class="pl-en">Select</span>();
+<span class="pl-k">const</span> <span class="pl-c1">rotate</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol3RotateFeature.RotateFeatureInteraction</span>({
+    features<span class="pl-k">:</span> <span class="pl-smi">select</span>.<span class="pl-en">getFeatures</span>()
+});
+
+<span class="pl-smi">rotate</span>.<span class="pl-en">on</span>(<span class="pl-smi">ol3RotateFeature</span>.<span class="pl-smi">RotateFeatureEventType</span>.<span class="pl-c1">START</span>, <span class="pl-smi">evt</span> <span class="pl-k">=&gt;</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>rotate start<span class="pl-pds">'</span></span>, evt));
+<span class="pl-smi">rotate</span>.<span class="pl-en">on</span>(<span class="pl-smi">ol3RotateFeature</span>.<span class="pl-smi">RotateFeatureEventType</span>.<span class="pl-c1">ROTATING</span>, <span class="pl-smi">evt</span> <span class="pl-k">=&gt;</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>rotating<span class="pl-pds">'</span></span>, evt));
+<span class="pl-smi">rotate</span>.<span class="pl-en">on</span>(<span class="pl-smi">ol3RotateFeature</span>.<span class="pl-smi">RotateFeatureEventType</span>.<span class="pl-c1">END</span>, <span class="pl-smi">evt</span> <span class="pl-k">=&gt;</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>rotate end<span class="pl-pds">'</span></span>, evt));
+
+<span class="pl-smi">map</span>.<span class="pl-en">addInteraction</span>(select);
+<span class="pl-smi">map</span>.<span class="pl-en">addInteraction</span>(rotate);</pre></div>
+
+<p>Example of usage in Browser environment in <code>index.html</code>.</p>
+
+<p>Getting total angle or last anchor coordinates after rotation:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">rotate</span>.<span class="pl-en">on</span>(<span class="pl-smi">ol3RotateFeature</span>.<span class="pl-smi">RotateFeatureEventType</span>.<span class="pl-c1">END</span>, <span class="pl-smi">evt</span> <span class="pl-k">=&gt;</span> {
+    <span class="pl-smi">evt</span>.<span class="pl-smi">features</span>.<span class="pl-en">forEach</span>(<span class="pl-smi">feature</span> <span class="pl-k">=&gt;</span> {
+        <span class="pl-c">// get total angle in radians (positive is counter-clockwise)</span>
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>angle<span class="pl-pds">'</span></span>) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span> is <span class="pl-pds">'</span></span><span class="pl-k">+</span> (<span class="pl-k">-</span><span class="pl-c1">1</span> <span class="pl-k">*</span> <span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>angle<span class="pl-pds">'</span></span>) <span class="pl-k">*</span> <span class="pl-c1">180</span> <span class="pl-k">/</span> <span class="pl-c1">Math</span>.<span class="pl-c1">PI</span> ) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>°<span class="pl-pds">'</span></span>);
+        <span class="pl-c">// get las anchor coordinates</span>
+        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>anchor<span class="pl-pds">'</span></span>));
+    });
+});</pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT (c) 2016, Vladimir Vershinin</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ghettovoice/ol3-rotate-feature">ol3-rotate-feature</a> is maintained by <a href="https://github.com/ghettovoice">ghettovoice</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
