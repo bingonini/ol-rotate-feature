@@ -19,7 +19,9 @@
     </section>
 
     <section class="main-content">
-      <h1>
+      <p><a href="https://www.npmjs.org/package/ol3-rotate-feature"><img src="http://img.shields.io/npm/v/ol3-rotate-feature.svg" alt="view on npm"></a></p>
+
+<h1>
 <a id="rotate-feature-interaction-for-openlayers-3" class="anchor" href="#rotate-feature-interaction-for-openlayers-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rotate feature interaction for OpenLayers 3</h1>
 
 <p>Plugin adds interaction that allows to rotate vector features around some anchor.</p>
@@ -40,8 +42,8 @@
 
 <p>Plugin is packed into UMD wrapper, import it with CommonJS or ES6:</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">RotateFeature</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>ol3-rotate-feature<span class="pl-pds">'</span></span>;
-<span class="pl-k">const</span> <span class="pl-c1">RotateFeature</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ol3-rotate-feature<span class="pl-pds">'</span></span>);</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> <span class="pl-smi">RotateFeatureInteraction</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">'</span>ol3-rotate-feature<span class="pl-pds">'</span></span>;
+<span class="pl-k">const</span> <span class="pl-c1">RotateFeatureInteraction</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ol3-rotate-feature<span class="pl-pds">'</span></span>);</pre></div>
 
 <p>In Browser environment it is available as <code>ol.interaction.RotateFeature</code>.</p>
 
@@ -64,21 +66,36 @@
 </tr>
 <tr>
 <td align="left">style</td>
-<td align="left"><em>ol.style.Style | Array | ol.style.StyleFunction</em></td>
+<td align="left"><em>ol.style.Style | Array&lt;ol.style.Style&gt; | ol.style.StyleFunction | undefined</em></td>
 <td align="left">Style of the overlay with interaction helper features.</td>
 </tr>
 <tr>
-<td align="left">angleProperty</td>
-<td align="left"><em>string</em></td>
-<td align="left">Property name where to save current rotation angle. Default is  'angle'.</td>
+<td align="left">angle</td>
+<td align="left"><em>number | undefined</em></td>
+<td align="left">Initial angle in radians (positive is counter-clockwise), applied for features already added to collection. Default is <code>0</code>.</td>
 </tr>
 <tr>
-<td align="left">anchorProperty</td>
-<td align="left"><em>string</em></td>
-<td align="left">Property name where to save current rotation anchor coordinates. Default is  'anchor'.</td>
+<td align="left">anchor</td>
+<td align="left"><em>number[] | ol.Coordinate | undefined</em></td>
+<td align="left">Initial anchor coordinate. Default is center of features extent.</td>
 </tr>
 </tbody>
 </table>
+
+<h3>
+<a id="methods" class="anchor" href="#methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Methods</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Set current angle of interaction features.</span>
+<span class="pl-smi">RotateFeatureInteraction</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">setAngle</span>(angle <span class="pl-k">:</span> number)</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Returns current angle of interaction features.</span>
+<span class="pl-smi">RotateFeatureInteraction</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">getAngle</span>() <span class="pl-k">:</span> number</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Set current anchor position.</span>
+<span class="pl-smi">RotateFeatureInteraction</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">setAnchor</span>(anchor<span class="pl-k">?</span> <span class="pl-k">:</span> number[] <span class="pl-k">|</span> <span class="pl-smi">ol</span>.<span class="pl-smi">Coordinate</span>)</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Returns current anchor position.</span>
+<span class="pl-smi">RotateFeatureInteraction</span>.<span class="pl-c1">prototype</span>.<span class="pl-en">getAnchor</span>() <span class="pl-k">:</span> number[] <span class="pl-k">|</span> <span class="pl-smi">ol</span>.<span class="pl-smi">Coordinate</span> <span class="pl-k">|</span> <span class="pl-c1">undefined</span> </pre></div>
 
 <h3>
 <a id="events" class="anchor" href="#events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events</h3>
@@ -91,6 +108,10 @@
 <ul>
 <li>
 <strong>features</strong>    <em>ol.Collection</em>     The features being rotated.</li>
+<li>
+<strong>angle</strong>       <em>number</em>            Current angle in radians.</li>
+<li>
+<strong>anchor</strong>      <em>ol.Coordinate</em>     Current anchor position.</li>
 </ul>
 
 <table>
@@ -128,15 +149,15 @@
 
 <span class="pl-k">const</span> <span class="pl-c1">point</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
     name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>point<span class="pl-pds">'</span></span>,
-    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">Point</span>([<span class="pl-c1">2384267.0573564973</span>, <span class="pl-c1">7557371.884852641</span>])
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom.Point</span>([<span class="pl-c1">2384267.0573564973</span>, <span class="pl-c1">7557371.884852641</span>])
 });
 <span class="pl-k">const</span> <span class="pl-c1">line</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
     name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>line<span class="pl-pds">'</span></span>,
-    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">LineString</span>([[<span class="pl-k">-</span><span class="pl-c1">603697.2100018249</span>, <span class="pl-k">-</span><span class="pl-c1">239432.60826165066</span>], [<span class="pl-c1">4190433.20404443</span>, <span class="pl-c1">2930563.8287811787</span>]])
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom.LineString</span>([[<span class="pl-k">-</span><span class="pl-c1">603697.2100018249</span>, <span class="pl-k">-</span><span class="pl-c1">239432.60826165066</span>], [<span class="pl-c1">4190433.20404443</span>, <span class="pl-c1">2930563.8287811787</span>]])
 });
 <span class="pl-k">const</span> <span class="pl-c1">polygon</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Feature</span>({
     name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>polygon<span class="pl-pds">'</span></span>,
-    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom</span>.<span class="pl-en">Polygon</span>([[[<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>], [<span class="pl-k">-</span><span class="pl-c1">9541458.663080638</span>, <span class="pl-c1">6221214.458704827</span>], [<span class="pl-k">-</span><span class="pl-c1">11473786.738129886</span>, <span class="pl-c1">3300708.4819848104</span>], [<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>]]])
+    geometry<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.geom.Polygon</span>([[[<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>], [<span class="pl-k">-</span><span class="pl-c1">9541458.663080638</span>, <span class="pl-c1">6221214.458704827</span>], [<span class="pl-k">-</span><span class="pl-c1">11473786.738129886</span>, <span class="pl-c1">3300708.4819848104</span>], [<span class="pl-k">-</span><span class="pl-c1">14482348.171434438</span>, <span class="pl-c1">6661491.741627443</span>]]])
 });
 
 <span class="pl-k">const</span> <span class="pl-c1">map</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Map</span>({
@@ -145,11 +166,11 @@
         zoom<span class="pl-k">:</span> <span class="pl-c1">2</span>
     }),
     layers<span class="pl-k">:</span> [
-        <span class="pl-k">new</span> <span class="pl-en">ol.layer</span>.<span class="pl-en">Tile</span>({
-            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source</span>.<span class="pl-en">MapQuest</span>({ layer<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>osm<span class="pl-pds">'</span></span> })
+        <span class="pl-k">new</span> <span class="pl-en">ol.layer.Tile</span>({
+            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source.MapQuest</span>({ layer<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>osm<span class="pl-pds">'</span></span> })
         }),
-        <span class="pl-k">new</span> <span class="pl-en">ol.layer</span>.<span class="pl-en">Vector</span>({
-            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source</span>.<span class="pl-en">Vector</span>({
+        <span class="pl-k">new</span> <span class="pl-en">ol.layer.Vector</span>({
+            source<span class="pl-k">:</span> <span class="pl-k">new</span> <span class="pl-en">ol.source.Vector</span>({
                 projection<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>EPSG:33857<span class="pl-pds">'</span></span>,
                 features<span class="pl-k">:</span> [point, line, polygon]
             })
@@ -160,8 +181,8 @@
 });
 
 <span class="pl-k">const</span> <span class="pl-c1">features</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.Collection</span>();
-<span class="pl-k">const</span> <span class="pl-c1">select</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.interaction</span>.<span class="pl-en">Select</span>();
-<span class="pl-k">const</span> <span class="pl-c1">rotate</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.interaction</span>.<span class="pl-en">RotateFeature</span>({
+<span class="pl-k">const</span> <span class="pl-c1">select</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.interaction.Select</span>();
+<span class="pl-k">const</span> <span class="pl-c1">rotate</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">ol.interaction.RotateFeature</span>({
     features<span class="pl-k">:</span> <span class="pl-smi">select</span>.<span class="pl-en">getFeatures</span>()
 });
 
@@ -177,12 +198,10 @@
 <p>Getting total angle or last anchor coordinates after rotation:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-smi">rotate</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>rotateend<span class="pl-pds">'</span></span>, <span class="pl-smi">evt</span> <span class="pl-k">=&gt;</span> {
-    <span class="pl-smi">evt</span>.<span class="pl-smi">features</span>.<span class="pl-en">forEach</span>(<span class="pl-smi">feature</span> <span class="pl-k">=&gt;</span> {
-        <span class="pl-c">// get total angle in radians (positive is counter-clockwise)</span>
-        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>angle<span class="pl-pds">'</span></span>) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span> is <span class="pl-pds">'</span></span><span class="pl-k">+</span> (<span class="pl-k">-</span><span class="pl-c1">1</span> <span class="pl-k">*</span> <span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>angle<span class="pl-pds">'</span></span>) <span class="pl-k">*</span> <span class="pl-c1">180</span> <span class="pl-k">/</span> <span class="pl-c1">Math</span>.<span class="pl-c1">PI</span> ) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>°<span class="pl-pds">'</span></span>);
-        <span class="pl-c">// get las anchor coordinates</span>
-        <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">feature</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>anchor<span class="pl-pds">'</span></span>));
-    });
+    <span class="pl-c">// get total angle in degrees</span>
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">evt</span>.<span class="pl-smi">angle</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span> is <span class="pl-pds">'</span></span><span class="pl-k">+</span> (<span class="pl-k">-</span><span class="pl-c1">1</span> <span class="pl-k">*</span> <span class="pl-smi">evt</span>.<span class="pl-smi">angle</span> <span class="pl-k">*</span> <span class="pl-c1">180</span> <span class="pl-k">/</span> <span class="pl-c1">Math</span>.<span class="pl-c1">PI</span> ) <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>°<span class="pl-pds">'</span></span>);
+    <span class="pl-c">// get last anchor coordinates</span>
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">evt</span>.<span class="pl-smi">anchor</span>);
 });</pre></div>
 
 <h2>
