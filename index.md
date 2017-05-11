@@ -1,6 +1,6 @@
 ---
 redirect_from:
-  - /ol3-rotate-feature
+  - /ol3-rotate-feature/
 ---
 [![Build Status](https://travis-ci.org/ghettovoice/ol-rotate-feature.svg?branch=master)](https://travis-ci.org/ghettovoice/ol-rotate-feature)
 [![Coverage Status](https://coveralls.io/repos/github/ghettovoice/ol-rotate-feature/badge.svg?branch=master)](https://coveralls.io/github/ghettovoice/ol-rotate-feature?branch=master)
